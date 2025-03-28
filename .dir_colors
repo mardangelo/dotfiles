@@ -1,0 +1,310 @@
+# Configuration file for dircolors, a utility to help you set the
+# LS_COLORS environment variable used by GNU ls with the --color option.
+# Copyright (C) 1996-2022 Free Software Foundation, Inc.
+# Copying and distribution of this file, with or without modification,
+# are permitted provided the copyright notice and this notice are preserved.
+# The keywords COLOR, OPTIONS, and EIGHTBIT (honored by the
+# slackware version of dircolors) are recognized but ignored.
+# Global config options can be specified before TERM or COLORTERM entries
+# Below are TERM or COLORTERM entries, which can be glob patterns, which
+# restrict following config to systems with matching environment variables.
+COLORTERM ?*
+TERM Eterm
+TERM ansi
+TERM *color*
+TERM con[0-9]*x[0-9]*
+TERM cons25
+TERM console
+TERM cygwin
+TERM *direct*
+TERM dtterm
+TERM gnome
+TERM hurd
+TERM jfbterm
+TERM konsole
+TERM kterm
+TERM linux
+TERM linux-c
+TERM mlterm
+TERM putty
+TERM rxvt*
+TERM screen*
+TERM st
+TERM terminator
+TERM tmux*
+TERM vt100
+TERM xterm*
+# Below are the color init strings for the basic file types.
+# One can use codes for 256 or more colors supported by modern terminals.
+# The default color codes use the capabilities of an 8 color terminal
+# with some additional attributes as per the following codes:
+# Attribute codes:
+# 00=none 01=bold 04=underscore 05=blink 07=reverse 08=concealed
+# Text color codes:
+# 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
+# Background color codes:
+# 40=black 41=red 42=green 43=yellow 44=blue 45=magenta 46=cyan 47=white
+#NORMAL 00 # no color code at all
+#FILE 00 # regular file: use no color at all
+# Below are the color init strings for the basic file types.
+# Tokyo Night colors:
+# Blue: 38;2;122;162;247 (#7aa2f7)
+# Cyan: 38;2;125;207;255 (#7dcfff)
+# Green: 38;2;158;206;106 (#9ece6a)
+# Purple: 38;2;187;154;247 (#bb9af7)
+# Red: 38;2;247;118;142 (#f7768e)
+# Yellow: 38;2;224;175;104 (#e0af68)
+# Foreground: 38;2;192;202;245 (#c0caf5)
+# Gray: 38;2;86;95;137 (#565f89)
+
+# Basic file types
+RESET 0
+DIR 38;2;122;162;247 # Blue
+LINK 38;2;187;154;247 # Purple
+MULTIHARDLINK 38;2;192;202;245 # Foreground
+
+# Executable files
+FIFO 38;2;247;118;142 # Red
+SOCK 38;2;247;118;142 # Red
+DOOR 38;2;247;118;142 # Red
+BLK 38;2;224;175;104;1 # Yellow, bold
+CHR 38;2;224;175;104;1 # Yellow, bold
+ORPHAN 38;2;247;118;142;1 # Red, bold
+MISSING 38;2;247;118;142;1 # Red, bold
+SETUID 38;2;0;0;0;48;2;247;118;142 # Black on Red
+SETGID 38;2;0;0;0;48;2;224;175;104 # Black on Yellow
+CAPABILITY 38;2;0;0;0;48;2;158;206;106 # Black on Green
+STICKY_OTHER_WRITABLE 38;2;0;0;0;48;2;122;162;247 # Black on Blue
+OTHER_WRITABLE 38;2;0;0;0;48;2;125;207;255 # Black on Cyan
+STICKY 38;2;0;0;0;48;2;187;154;247 # Black on Purple
+
+# Executable files (bright green)
+EXEC 38;2;158;206;106 # Green
+
+# Archives
+.tar 38;2;224;175;104 # Yellow
+.tgz 38;2;224;175;104 # Yellow
+.arc 38;2;224;175;104 # Yellow
+.arj 38;2;224;175;104 # Yellow
+.taz 38;2;224;175;104 # Yellow
+.lha 38;2;224;175;104 # Yellow
+.lz4 38;2;224;175;104 # Yellow
+.lzh 38;2;224;175;104 # Yellow
+.lzma 38;2;224;175;104 # Yellow
+.tlz 38;2;224;175;104 # Yellow
+.txz 38;2;224;175;104 # Yellow
+.tzo 38;2;224;175;104 # Yellow
+.t7z 38;2;224;175;104 # Yellow
+.zip 38;2;224;175;104 # Yellow
+.z 38;2;224;175;104 # Yellow
+.dz 38;2;224;175;104 # Yellow
+.gz 38;2;224;175;104 # Yellow
+.lrz 38;2;224;175;104 # Yellow
+.xz 38;2;224;175;104 # Yellow
+.zst 38;2;224;175;104 # Yellow
+.tzst 38;2;224;175;104 # Yellow
+.bz2 38;2;224;175;104 # Yellow
+.bz 38;2;224;175;104 # Yellow
+.tbz 38;2;224;175;104 # Yellow
+.tbz2 38;2;224;175;104 # Yellow
+.tz 38;2;224;175;104 # Yellow
+.deb 38;2;224;175;104 # Yellow
+.rpm 38;2;224;175;104 # Yellow
+.jar 38;2;224;175;104 # Yellow
+.war 38;2;224;175;104 # Yellow
+.ear 38;2;224;175;104 # Yellow
+.sar 38;2;224;175;104 # Yellow
+.rar 38;2;224;175;104 # Yellow
+.alz 38;2;224;175;104 # Yellow
+.ace 38;2;224;175;104 # Yellow
+.zoo 38;2;224;175;104 # Yellow
+.cpio 38;2;224;175;104 # Yellow
+.7z 38;2;224;175;104 # Yellow
+.rz 38;2;224;175;104 # Yellow
+.cab 38;2;224;175;104 # Yellow
+.wim 38;2;224;175;104 # Yellow
+.swm 38;2;224;175;104 # Yellow
+.dwm 38;2;224;175;104 # Yellow
+.esd 38;2;224;175;104 # Yellow
+
+# Image formats (cyan)
+.jpg 38;2;125;207;255 # Cyan
+.jpeg 38;2;125;207;255 # Cyan
+.mjpg 38;2;125;207;255 # Cyan
+.mjpeg 38;2;125;207;255 # Cyan
+.gif 38;2;125;207;255 # Cyan
+.bmp 38;2;125;207;255 # Cyan
+.pbm 38;2;125;207;255 # Cyan
+.pgm 38;2;125;207;255 # Cyan
+.ppm 38;2;125;207;255 # Cyan
+.tga 38;2;125;207;255 # Cyan
+.xbm 38;2;125;207;255 # Cyan
+.xpm 38;2;125;207;255 # Cyan
+.tif 38;2;125;207;255 # Cyan
+.tiff 38;2;125;207;255 # Cyan
+.png 38;2;125;207;255 # Cyan
+.svg 38;2;125;207;255 # Cyan
+.svgz 38;2;125;207;255 # Cyan
+.mng 38;2;125;207;255 # Cyan
+.pcx 38;2;125;207;255 # Cyan
+.mov 38;2;125;207;255 # Cyan
+.mpg 38;2;125;207;255 # Cyan
+.mpeg 38;2;125;207;255 # Cyan
+.m2v 38;2;125;207;255 # Cyan
+.mkv 38;2;125;207;255 # Cyan
+.webm 38;2;125;207;255 # Cyan
+.webp 38;2;125;207;255 # Cyan
+.ogm 38;2;125;207;255 # Cyan
+.mp4 38;2;125;207;255 # Cyan
+.m4v 38;2;125;207;255 # Cyan
+.mp4v 38;2;125;207;255 # Cyan
+.vob 38;2;125;207;255 # Cyan
+.qt 38;2;125;207;255 # Cyan
+.nuv 38;2;125;207;255 # Cyan
+.wmv 38;2;125;207;255 # Cyan
+.asf 38;2;125;207;255 # Cyan
+.rm 38;2;125;207;255 # Cyan
+.rmvb 38;2;125;207;255 # Cyan
+.flc 38;2;125;207;255 # Cyan
+.avi 38;2;125;207;255 # Cyan
+.fli 38;2;125;207;255 # Cyan
+.flv 38;2;125;207;255 # Cyan
+.gl 38;2;125;207;255 # Cyan
+.dl 38;2;125;207;255 # Cyan
+.xcf 38;2;125;207;255 # Cyan
+.xwd 38;2;125;207;255 # Cyan
+.yuv 38;2;125;207;255 # Cyan
+.cgm 38;2;125;207;255 # Cyan
+.emf 38;2;125;207;255 # Cyan
+.ogv 38;2;125;207;255 # Cyan
+.ogx 38;2;125;207;255 # Cyan
+
+# Audio formats (purple)
+.aac 38;2;187;154;247 # Purple
+.au 38;2;187;154;247 # Purple
+.flac 38;2;187;154;247 # Purple
+.m4a 38;2;187;154;247 # Purple
+.mid 38;2;187;154;247 # Purple
+.midi 38;2;187;154;247 # Purple
+.mka 38;2;187;154;247 # Purple
+.mp3 38;2;187;154;247 # Purple
+.mpc 38;2;187;154;247 # Purple
+.ogg 38;2;187;154;247 # Purple
+.ra 38;2;187;154;247 # Purple
+.wav 38;2;187;154;247 # Purple
+.oga 38;2;187;154;247 # Purple
+.opus 38;2;187;154;247 # Purple
+.spx 38;2;187;154;247 # Purple
+.xspf 38;2;187;154;247 # Purple
+
+# Document formats (yellow-orange)
+.doc 38;2;224;175;104 # Yellow
+.docx 38;2;224;175;104 # Yellow
+.rtf 38;2;224;175;104 # Yellow
+.odt 38;2;224;175;104 # Yellow
+.dot 38;2;224;175;104 # Yellow
+.dotx 38;2;224;175;104 # Yellow
+.xls 38;2;224;175;104 # Yellow
+.xlsx 38;2;224;175;104 # Yellow
+.ods 38;2;224;175;104 # Yellow
+.ppt 38;2;224;175;104 # Yellow
+.pptx 38;2;224;175;104 # Yellow
+.odp 38;2;224;175;104 # Yellow
+.pdf 38;2;224;175;104 # Yellow
+.tex 38;2;224;175;104 # Yellow
+.md 38;2;224;175;104 # Yellow
+
+# Programming Languages with Tokyo Night colors
+
+# Shell scripts (light green)
+.sh 38;2;158;206;106 # Green
+.bash 38;2;158;206;106
+.zsh 38;2;158;206;106
+.fish 38;2;158;206;106
+
+# C/C++ (blue)
+.c 38;2;122;162;247 # Blue
+.h 38;2;86;95;137 # Gray (headers)
+.cpp 38;2;122;162;247
+.hpp 38;2;86;95;137
+.cc 38;2;122;162;247
+.cxx 38;2;122;162;247
+
+# Python (bright cyan)
+.py 38;2;125;207;255 # Cyan
+.pyc 38;2;86;95;137 # Gray (compiled)
+.pyd 38;2;86;95;137
+.pyo 38;2;86;95;137
+
+# Ruby (red)
+.rb 38;2;247;118;142 # Red
+.erb 38;2;247;118;142
+.gemspec 38;2;247;118;142
+
+# JavaScript (yellow)
+.js 38;2;224;175;104 # Yellow
+.mjs 38;2;224;175;104
+.jsx 38;2;224;175;104
+.ts 38;2;224;175;104
+.tsx 38;2;224;175;104
+
+# Web (magenta/purple)
+.html 38;2;187;154;247 # Purple
+.htm 38;2;187;154;247
+.css 38;2;187;154;247
+.scss 38;2;187;154;247
+.sass 38;2;187;154;247
+.less 38;2;187;154;247
+
+# Go (cyan-blue)
+.go 38;2;73;164;210 # Cyan-blue
+
+# Rust (orange-red)
+.rs 38;2;235;123;94 # Orange-red
+
+# Java (orange)
+.java 38;2;240;160;72 # Orange
+.class 38;2;86;95;137 # Gray (compiled)
+.jar 38;2;240;160;72
+
+# PHP (purple-blue)
+.php 38;2;152;139;219 # Purple-blue
+
+# Haskell (purple)
+.hs 38;2;187;154;247 # Purple
+.lhs 38;2;187;154;247
+
+# Lisps (light blue)
+.lisp 38;2;125;207;255 # Cyan
+.cl 38;2;125;207;255
+.scm 38;2;125;207;255
+.clj 38;2;125;207;255
+
+# Configuration files (lighter green)
+.yml 38;2;181;232;150 # Light green
+.yaml 38;2;181;232;150
+.json 38;2;181;232;150
+.toml 38;2;181;232;150
+.ini 38;2;181;232;150
+.conf 38;2;181;232;150
+.cfg 38;2;181;232;150
+
+# Build files (gray)
+.make 38;2;86;95;137 # Gray
+.mk 38;2;86;95;137
+.cmake 38;2;86;95;137
+.gradle 38;2;86;95;137
+
+# Docker/Containers (blue)
+#Dockerfile 38;2;122;162;247 # Blue
+.dockerignore 38;2;86;95;137 # Gray
+
+# Git (red)
+.git 38;2;247;118;142 # Red
+.gitignore 38;2;86;95;137 # Gray
+.gitmodules 38;2;86;95;137
+
+# Databases (magenta)
+.db 38;2;187;154;247 # Purple
+.sqlite 38;2;187;154;247
+.sqlite3 38;2;187;154;247

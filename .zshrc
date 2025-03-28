@@ -32,3 +32,5 @@ export LC_ALL=en_US.UTF-8
 
 export TERM=xterm-24bit
 
+test -r ~/.dir_colors && eval "$(dircolors -b ~/.dir_colors)" || eval "$(dircolors -b)"
+LS_COLORS="$LS_COLORS:*Dockerfile=38;2;122;162;247:*Makefile=38;2;86;95;137:*README.md=1;38;2;224;175;104"
