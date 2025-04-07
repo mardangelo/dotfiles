@@ -88,6 +88,10 @@
   :init
   (rainbow-mode t))
 
+;; Better delimiter highlighting for elisp
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 ;; Enable which-key to show available keybindings when you start a key sequence
 (use-package which-key
   :init
