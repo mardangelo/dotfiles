@@ -333,6 +333,107 @@
 ;; incorporate projectile into consult
 (use-package consult-projectile)
 
+;; ==========================
+;;   Completion Popup Frame
+;; ==========================
+
+;; Enhance in buffer completion with small completion popup (child frame)
+(use-package corfu
+  ;; Optional customizations
+  ;; :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+
+  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
+  ;; be used globally (M-/).  See also the customization variable
+  ;; `global-corfu-modes' to exclude certain modes.
+  :init
+  (global-corfu-mode))
+
+(use-package nerd-icons-corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
+  (setq nerd-icons-corfu-mapping
+      '((array :style "cod" :icon "symbol_array" :face font-lock-type-face)
+        (boolean :style "cod" :icon "symbol_boolean" :face font-lock-builtin-face)
+        (class :style "cod" :icon "symbol_class" :face font-lock-type-face)
+        (color :style "cod" :icon "symbol_color" :face success)
+        (constant :style "cod" :icon "symbol_constant" :face font-lock-constant-face)
+        (constructor :style "cod" :icon "symbol_method" :face font-lock-function-name-face)
+        (enum :style "cod" :icon "symbol_enum" :face font-lock-builtin-face)
+        (enum-member :style "cod" :icon "symbol_enum_member" :face font-lock-builtin-face)
+        (event :style "cod" :icon "symbol_event" :face font-lock-warning-face)
+        (field :style "cod" :icon "symbol_field" :face font-lock-variable-name-face)
+        (file :fn nerd-icons-icon-for-file :face font-lock-string-face)
+        (folder :fn nerd-icons-icon-for-dir :face font-lock-doc-face)
+        (function :style "cod" :icon "symbol_method" :face font-lock-function-name-face)
+        (interface :style "cod" :icon "symbol_interface" :face font-lock-type-face)
+        (keyword :style "cod" :icon "symbol_keyword" :face font-lock-keyword-face)
+        (method :style "cod" :icon "symbol_method" :face font-lock-function-name-face)
+        (module :style "cod" :icon "symbol_namespace" :face font-lock-preprocessor-face)
+        (numeric :style "cod" :icon "symbol_numeric" :face font-lock-builtin-face)
+        (operator :style "cod" :icon "symbol_operator" :face font-lock-comment-delimiter-face)
+        (param :style "cod" :icon "symbol_parameter" :face font-lock-builtin-face)
+        (property :style "cod" :icon "symbol_property" :face font-lock-variable-name-face)
+        (reference :style "cod" :icon "symbol_ruler" :face font-lock-variable-name-face)
+        (snippet :style "cod" :icon "symbol_snippet" :face font-lock-string-face)
+        (string :style "cod" :icon "symbol_string" :face font-lock-string-face)
+        (struct :style "cod" :icon "symbol_structure" :face font-lock-variable-name-face)
+        (text :style "cod" :icon "symbol_key" :face font-lock-doc-face)
+        (unit :style "cod" :icon "symbol_misc" :face font-lock-constant-face)
+        (value :style "cod" :icon "symbol_field" :face font-lock-builtin-face)
+        (variable :style "cod" :icon "symbol_variable" :face font-lock-variable-name-face)
+        (t :style "cod" :icon "code" :face font-lock-warning-face))))
+
+;; =====================
+;;  Completion at point
+;; ====================
+
+(use-package cape
+  ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
+  ;; Press C-c p ? to for help.
+  :bind ("M-p" . cape-prefix-map) ;; Alternative key: M-<tab>, M-p, M-+
+  :init
+  ;; Add to the global default value of `completion-at-point-functions' which is
+  ;; used by `completion-at-point'.  The order of the functions matters, the
+  ;; first function returning a result wins.  Note that the list of buffer-local
+  ;; completion functions takes precedence over the global list.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  (add-hook 'completion-at-point-functions #'cape-history)
+  (add-hook 'completion-at-point-functions #'cape-dict)
+  (advice-add 'cape-file :around #'cape-wrap-annotate)
+  (advice-add 'cape-dabbrev :around #'cape-wrap-annotate))
+
+;; useful configurations for cape
+(use-package emacs
+  :custom
+  ;; TAB cycle if there are only few candidates
+  ;; (completion-cycle-threshold 3)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (tab-always-indent 'complete)
+
+  ;; Emacs 30 and newer: Disable Ispell completion function.
+  ;; Try `cape-dict' as an alternative.
+  (text-mode-ispell-word-completion nil)
+
+  ;; Hide commands in M-x which do not apply to the current mode.  Corfu
+  ;; commands are hidden, since they are not used via M-x. This setting is
+  ;; useful beyond Corfu.
+  (read-extended-command-predicate #'command-completion-default-include-p))
+
 ;; Enable rich minibuffer annotations
 (use-package marginalia
   :bind (:map minibuffer-local-map
