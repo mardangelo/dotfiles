@@ -1,0 +1,23 @@
+return {
+  "nvimdev/dashboard-nvim",
+  config = function()
+    require("dashboard").setup({
+      theme = "hyper",
+      config = {
+        -- header = {
+        --   "",
+        --   "",
+        --   "Welcome to Neovim!",
+        --   "",
+        --   "",
+        -- },
+        shortcut = {
+          { desc = " Find File", group = "@keyword", action = "Telescope find_files", key = "f" },
+          { desc = " Find Text", group = "@string", action = "Telescope live_grep", key = "g" },
+          { desc = " Config", group = "@keyword", action = "edit $MYVIMRC", key = "c" },
+          { desc = "⏻ Quit", group = "@string", action = "quit", key = "q" },
+        },
+      },
+    })
+  end,
+}

@@ -1,0 +1,11 @@
+-- Ensure Lazy loads mini.starter before configuring it
+return {
+  "echasnovski/mini.nvim",
+  config = function()
+    require("mini.icons").setup()
+    MiniIcons.config = {
+      -- Icon style: 'glyph' or 'ascii'
+      style = "ascii",
+    }
+  end,
+}
