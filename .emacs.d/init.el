@@ -143,6 +143,13 @@
   ("C-c C-d" . helpful-at-point)
   ("C-h F" . helpful-function))
 
+;; Enable rich minibuffer annotations
+(use-package marginalia
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle)
+         :map completion-list-mode-map
+         ("M-A" . marginalia-cycle))
+  :init (marginalia-mode))
 
 ;; Slurp environment variables from the shell.
 ;; a.k.a. The Most Asked Question On r/emacs
