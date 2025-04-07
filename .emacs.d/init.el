@@ -28,7 +28,20 @@
               (insert (propertize "■ " 'face 
                                 `(:background ,color :foreground ,color))))))
           (insert "\n")))
-      (switch-to-buffer buffer)))
+    (switch-to-buffer buffer)))
+
+;; Line and column numbers, but not in all modes
+(column-number-mode)
+(global-display-line-numbers-mode t)
+
+(dolist (mode '(org-mode-hook
+		term-mode-hook
+		vterm-mode-hook
+		shell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; Word wrap in org mode
+(add-hook 'org-mode-hook #'visual-line-mode)
 
 ;; ======================
 ;; Set up package sources
@@ -52,8 +65,7 @@
 ;; with use-package, a macro for importing and installing packages. Also, refresh the package archive on load so we can pull the latest packages.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install
- 'use-package))
+  (package-install 'use-package))
 
 (require 'use-package)
 (setq
@@ -115,9 +127,7 @@
 	keycast-mode-line-remove-tail-elements nil
         keycast-mode-line-insert-after 'doom-modeline-misc-info ; '(:eval (doom-modeline-format--main))
 	keycast-mode-line-format "%k%c%r"
-	keycast-log-format "%-10K%C%R\n"
-  )
-)
+	keycast-log-format "%-10K%C%R\n"))
 
 ;; Enhanced documentation with examples
 (use-package helpful
@@ -125,7 +135,10 @@
   ([remap describe-function] . helpful-callable)
   ([remap describe-variable] . helpful-variable)
   ([remap describe-key] . helpful-key)
-)
+  ("C-h x" . helpful-command)
+  ("C-c C-d" . helpful-at-point)
+  ("C-h F" . helpful-function))
+
 
 ;; Slurp environment variables from the shell.
 ;; a.k.a. The Most Asked Question On r/emacs
