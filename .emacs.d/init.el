@@ -43,6 +43,9 @@
 ;; Word wrap in org mode
 (add-hook 'org-mode-hook #'visual-line-mode)
 
+;; Set default width of fill mode
+(setq-default fill-column 100)
+
 ;; ======================
 ;; Set up package sources
 ;; ======================
