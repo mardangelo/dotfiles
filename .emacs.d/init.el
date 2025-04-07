@@ -187,6 +187,21 @@
   :init
   (vertico-mode))
 
+;; Enable TTY child frames if available
+(when (featurep 'tty-child-frames)
+  ;; Use Unicode box-drawing characters for frame borders
+  (standard-display-unicode-special-glyphs)
+  ;; Use "floating" child frame for vertico completions 
+  (use-package vertico-posframe
+    :after vertico
+    :init
+    (vertico-posframe-mode)))
+    ;; :config
+    ;; (setq vertico-posframe-parameters
+    ;; 	  '((left-fringe . 8)
+    ;; 	    (right-fringe . 8)
+    ;; 	    (undecorated . nil)))))
+
 ;; Persist history across emacs restarts
 (use-package savehist
   :init
