@@ -80,7 +80,9 @@
 ;; ============
 
 ;; Better terminal emulator
-(use-package vterm)
+(use-package vterm
+  :config
+  (setq-default vterm-exit-functions #'kill-buffer))
 
 ;; Organization tool
 (use-package org
