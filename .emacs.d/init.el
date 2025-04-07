@@ -143,6 +143,41 @@
   ("C-c C-d" . helpful-at-point)
   ("C-h F" . helpful-function))
 
+;; ============================
+;; Incremental fuzzy completion
+;; ============================
+
+;; Vertical interactive completion
+(use-package vertico
+  :custom
+  (vertico-resize t)
+  (vertico-cycle t)
+  :init
+  (vertico-mode))
+
+;; Persist history across emacs restarts
+(use-package savehist
+  :init
+  (savehist-mode))
+
+;; Minibuffer configuration for within emacs
+(use-package emacs
+  :custom
+  ; minibuffers inside minibuffers
+  (enable-recursive-minibuffers t) 
+  ; hide commands that don't work in the current mode (vertico benefits)
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  ; no cursor in the minibuffer prompt
+  (minibuffer-prompt-properties
+   '(read-only t cursor-intangible t face minibuffer-prompt))) ;
+
+;; Orderless Completion Style
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
 ;; Enable rich minibuffer annotations
 (use-package marginalia
   :bind (:map minibuffer-local-map
