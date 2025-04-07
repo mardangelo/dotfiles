@@ -108,6 +108,33 @@
 	which-key-unicode-correction 3)
   )
 
+;; Better keybinding config
+(use-package general
+  :config
+  (general-evil-setup t)
+  (general-create-definer mars/leader-keys
+			  :keymaps '(normal insert visual emacs)
+			  :prefix "SPC" ; not insert mode
+			  :global-prefix "M-SPC") ; insert mode
+  (mars/leader-keys
+     "t" '(:ignore t :which-key "toggles")
+     "tt" '(load-theme :which-key "choose theme")))
+;; ===========================
+
+;; Hydra - transient key bindings
+(use-package hydra)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
+
+(mars/leader-keys
+  "ts" '(hydra-text-scale/body :which-key "scale text"))
+
+;; ====================
+
 ;; Straight up better modeline
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
