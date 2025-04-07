@@ -9,8 +9,11 @@
 .face*
 .gitconfig
 .local/
-.mozilla
-.vscode
+.mozilla/
+.tldr/
+.vscode/
+.venv/
+code/
 Bookshelf/
 Documents/
 Downloads/
@@ -28,12 +31,19 @@ tmp/
 # SSH/security related
 .ssh/
 .gnupg/
+.pki/
+
+# LLM
+.claude/
+.claude.json
+
 
 # Configs
 .config/kanshi
 .config/code-server
 .config/pulse
 .config/emacs
+.config/chromium
 .config/systemd
 .config/user-dirs*
 .config/*.ini
