@@ -113,6 +113,19 @@
 	which-key-unicode-correction 3)
   )
 
+;; ====================
+;;   emacs web wowser
+;; ===================
+
+(use-package eww
+  :config
+  (setq eww-auto-rename-buffer t)
+  (setq browse-url-browser-function 'eww-browse-url)
+  ;; Set the built in no frills browser to use readable-mode by default for most pages, except the ones listed here
+  (setq eww-readable-urls '(("^https://wikipedia.org$" . nil)
+  			  ("^https://github.com$" . nil)
+  			  ("^https://developer.mozilla.org$" . nil)
+  			  ".*")))
 
 ;; ==================
 ;;       Dired
