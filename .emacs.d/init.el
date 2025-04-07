@@ -1,0 +1,163 @@
+;; No startup screen
+(setq inhibit-startup-message t)
+
+;; Remove UI elements
+(menu-bar-mode -1) ; toggle menu bar per frame
+(tooltip-mode -1) ; show help text in echo area, not pop up window
+
+;; ===============
+;;    truecolor
+;; ===============
+
+(unless (display-graphic-p)
+  (setq tty-color-mode 'direct)
+  (setq frame-use-direct-color t)
+  (setq tty-max-colors 16777216))
+
+(defun true-color-test ()
+  "Display a gradient of colors to test true color support."
+  (interactive)
+  (let ((buffer (get-buffer-create "*true-color-test*")))
+    (with-current-buffer buffer
+      (erase-buffer)
+      (dotimes (r 6)
+        (dotimes (g 6)
+          (dotimes (b 6)
+            (let ((color (format "#%02x%02x%02x" 
+                               (* r 51) (* g 51) (* b 51))))
+              (insert (propertize "■ " 'face 
+                                `(:background ,color :foreground ,color))))))
+          (insert "\n")))
+      (switch-to-buffer buffer)))
+
+;; ======================
+;; Set up package sources
+;; ======================
+
+(require 'package)
+
+;; Nice macro for updating lists in place.
+(defmacro append-to-list (target suffix)
+  "Append SUFFIX to TARGET in place."
+  `(setq ,target (append ,target ,suffix)))
+
+;; Set up emacs package archives with 'package
+(append-to-list package-archives
+                '(("melpa" . "http://melpa.org/packages/") ;; Main package archive
+                  ("melpa-stable" . "http://stable.melpa.org/packages/"))) ;; Some packages might only do stable releases?
+
+(package-initialize)
+
+;; Ensure use-package is present. From here on out, all packages are loaded
+;; with use-package, a macro for importing and installing packages. Also, refresh the package archive on load so we can pull the latest packages.
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install
+ 'use-package))
+
+(require 'use-package)
+(setq
+ use-package-always-ensure t ;; Makes sure to download new packages if they aren't already downloaded
+ use-package-verbose t) ;; Package install logging. Packages break, it's nice to know why.
+
+;; ============
+;;   Packages
+;; ============
+
+;; Better terminal emulator
+(use-package vterm)
+
+;; Organization tool
+(use-package org
+  :pin gnu)
+
+;; Highlight hex, rgb colour codes
+(use-package rainbow-mode
+  :init
+  (rainbow-mode t))
+
+;; Enable which-key to show available keybindings when you start a key sequence
+(use-package which-key
+  :init
+  (which-key-mode 1) ; enable minor mode
+  :config
+  (setq which-key-idle-delay 0.4 ; delay before popup appears
+	which-key-popup-type 'side-window ; side window enables paging
+	which-key-side-window-location 'bottom
+	which-key-max-description-length 40
+	which-key-max-display-columns nil ; unlimited columns
+	which-key-sort-order 'which-key-key-order-alpha ; sort keys alphabetically
+	which-key-show-prefix 'echo ; display current prefix sequence
+	which-key-dont-use-unicode nil ; use unicode
+	which-key-unicode-correction 3)
+  )
+
+;; Straight up better modeline
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
+
+;; Show command name and key binding for whatever was just executed
+(use-package keycast
+  :after doom-modeline
+  :hook (after-init . keycast-mode)
+  :config
+  (defun keycast-active-frame-bottom-right-pp ()
+    "Predicate to determine if should show keycast in the modeline."
+    (eq (selected-frame) (car (visible-frame-list))))
+  (define-minor-mode keycast-mode
+    "Show current command and its key binding in the mode line (fix for use with doom-mode-line)."
+    :global t
+    (if keycast-mode
+        (add-hook 'pre-command-hook 'keycast--update t)
+      (remove-hook 'pre-command-hook 'keycast--update)))
+  (add-to-list 'global-mode-string '("" keycast-mode-line))
+  (setq keycast-mode-line-window-predicate 'keycast-active-frame-bottom-right-pp
+	keycast-mode-line-remove-tail-elements nil
+        keycast-mode-line-insert-after 'doom-modeline-misc-info ; '(:eval (doom-modeline-format--main))
+	keycast-mode-line-format "%k%c%r"
+	keycast-log-format "%-10K%C%R\n"
+  )
+)
+
+;; Enhanced documentation with examples
+(use-package helpful
+  :bind
+  ([remap describe-function] . helpful-callable)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-key] . helpful-key)
+)
+
+;; Slurp environment variables from the shell.
+;; a.k.a. The Most Asked Question On r/emacs
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+
+;; ==============
+;;     Themes
+;; ==============
+
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t
+	doom-themes-enable-italic t)
+  (doom-themes-visual-bell-config) ; flash mode-line on error
+  (doom-themes-org-config) ; better compatibility with org mode
+  (load-theme 'doom-tokyo-night t))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d"
+     "da75eceab6bea9298e04ce5b4b07349f8c02da305734f7c0c8c6af7b5eaa9738"
+     "e4a702e262c3e3501dfe25091621fe12cd63c7845221687e36a79e17cf3a67e0"
+     default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
