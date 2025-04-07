@@ -513,6 +513,49 @@
   (doom-themes-org-config) ; better compatibility with org mode
   (load-theme 'doom-tokyo-night t))
 
+;; Enable built-in tab bar with Tokyo Night colors
+(setq tab-bar-show t)
+
+;; Style tab-bar to match Tokyo Night theme
+(custom-set-faces
+ '(tab-bar ((t (:background "#16161e" :foreground "#565f89"))))
+ '(tab-bar-tab ((t (:background "#1a1b26" :foreground "#c0caf5" :box (:line-width 2 :color "#1a1b26")))))
+ '(tab-bar-tab-inactive ((t (:background "#16161e" :foreground "#565f89" :box nil)))))
+
+;; Optional: Add some padding to tab-bar for better aesthetics
+(setq tab-bar-new-button "➕"
+      tab-bar-close-button "✕"
+      tab-bar-auto-width-max '(200 20)) ;; Adjust max width for tabs
+
+(use-package all-the-icons)
+
+;; Add icons to tab-bar-tabs
+(defun mars/tab-bar-tab-name-function ()
+  (let* ((tab-name (tab-bar-tab-name-current))
+         (icon (all-the-icons-octicon "file-directory" 
+                :v-adjust 0.0 
+                :height 0.9 
+                :face 'all-the-icons-blue)))
+    (format " %s %s " icon tab-name)))
+
+(setq tab-bar-tab-name-function #'mars/tab-bar-tab-name-function)
+(tab-bar-mode t)
+
+(use-package centaur-tabs
+  :demand
+  :config
+  (centaur-tabs-mode t)
+  (setq centaur-tabs-style "wave"
+	centaur-tabs-set-icons t
+	centaur-tabs-icon-type 'nerd-icons
+	centaur-tabs-gray-out-icons 'buffer
+	centaur-tabs-set-bar 'over
+	centaur-tabs-set-close-button nil
+	centaur-tabs-set-modified-marker t)
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
