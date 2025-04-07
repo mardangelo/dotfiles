@@ -1,0 +1,104 @@
+# Temp files
+*~
+\#*#
+
+# General files to ignore
+.DS_Store
+.Trash/
+.cache/
+.gitconfig
+.local/
+.mozilla
+.vscode
+Bookshelf/
+Documents/
+Downloads/
+tmp/
+
+# Shell history files
+.*history
+.histfile
+.lesshst
+.wget-hsts
+.python_history
+.node_repl_history
+.zsh_history
+
+# SSH/security related
+.ssh/
+.gnupg/
+
+# Configs
+.config/kanshi
+.config/code-server
+.config/pulse
+.config/emacs
+.config/systemd
+.config/user-dirs*
+.config/*.ini
+
+# Vim/Neovim
+.viminfo
+.nvim/*
+.vim/*
+.config/nvim/*
+!.vimrc
+!.config/nvim/init.vim
+!.config/nvim/init.lua
+!.config/nvim/lua/
+
+# Emacs/Doom
+.config/emacs/*
+.emacs.d/*
+!.emacs.d/init.el
+!.emacs.d/custom.el
+.doom.d/*
+!.doom.d/init.el
+!.doom.d/config.el
+!.doom.d/packages.el
+.deft/
+
+# Zsh
+.zcompdump*
+.zsh_sessions/
+.zprezto/
+!.zpreztorc
+!.zshrc
+!.zprofile
+!.zshenv
+!.p10k.zsh
+
+# Tmux
+.tmux/plugins/
+.tmux/resurrect/
+!.tmux.conf
+
+# Mosh
+.mosh_server_copies/
+
+# Package managers
+.npm/
+.cargo/
+.gem/
+.bundle/
+
+# Logs
+*.log
+.xsession-errors
+.xsession-errors.old
+
+# Docker
+.docker/
+
+# Other
+.fasd
+.rustup
+.bash_logout
+.sudo_as_admin_successful
+
+# X11
+.Xauthority
+.Xauthority-*
+.xsession-errors
+.xsession-errors.old
+

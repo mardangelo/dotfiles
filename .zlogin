@@ -1,0 +1,1 @@
+/home/dangmar/.zprezto/runcoms/zlogin
