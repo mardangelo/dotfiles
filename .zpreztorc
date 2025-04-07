@@ -47,9 +47,13 @@ zstyle ':prezto:load' pmodule \
   'node' \
   'syntax-highlighting' \
   'history-substring-search' \
+  'command-not-found' \
+  'ssh' \
+  'tmux' \
+  'fzf-tab' \
+  'autosuggestions' \
   'prompt'
 
-#
 # Autosuggestions
 #
 
