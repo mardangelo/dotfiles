@@ -186,7 +186,9 @@
   (vertico-resize t)
   (vertico-cycle t)
   :init
-  (vertico-mode))
+  (vertico-mode)
+  :config
+  (define-key vertico-map (kbd "C-.") #'embark-act))
 
 ;; Enable TTY child frames if available
 (when (featurep 'tty-child-frames)
@@ -332,6 +334,57 @@
 
 ;; incorporate projectile into consult
 (use-package consult-projectile)
+
+;; ================
+;;   Context Menu
+;; =================
+
+;; Choose command based on what's near point, both in multibuffer completion and normal buffers
+(use-package embark
+  :bind
+  (("M-." . embark-act)
+   ("M-o" . embark-act)
+   ("M-;" . embark-dwim) ; good alternative to M-.
+   ("C-h B" . embark-bindings) ; alternative for describe-bindin
+   :map minibuffer-local-map
+   ("C-@" . embark-select) ; C-SPC shows up as C-@ in the minibuffer
+   ("C-SPC" . embark-select)
+   ("C-." . embark-act)
+   ("M-o" . embark-act)
+   :map embark-org-table-cell-map
+   ("M-b" . org-table-move-cell-left)
+   ("M-f" . org-table-move-cell-right)
+   ("M-p" . org-table-move-cell-up)
+   ("M-n" . org-table-move-cell-down)
+   :map embark-heading-map
+   ("M-b" . org-do-promote)
+   ("M-f" . org-do-demote)
+   :map embark-org-item-map
+   ("M-b" . org-outdent-item)
+   ("M-f" . org-indent-item)
+   ("M-p" . org-move-item-up)
+   ("M-n" . org-move-item-down))
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command) ;replace key help with completing read interface
+  :config
+  (define-key minibuffer-local-map (kbd "C-.") #'embark-act)
+  (define-key embark-org-table-cell-map (kbd "M-b") #'embark-org-metaleft)
+  (define-key embark-org-table-cell-map (kbd "M-f") #'embark-org-metaright)
+  (define-key embark-org-table-cell-map (kbd "M-p") #'embark-org-metaup)
+  (define-key embark-org-table-cell-map (kbd "M-n") #'embark-org-metadown)
+  (define-key embark-org-table-cell-map (kbd "M-n") #'embark-org-metadown)
+  (define-key embark-region-map (kbd "M-b") #'indent-rigidly)
+  (define-key embark-region-map (kbd "M-f") #'indent-rigidly)
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; ==========================
 ;;   Completion Popup Frame
