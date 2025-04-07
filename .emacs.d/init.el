@@ -64,11 +64,33 @@
 
 (package-initialize)
 
+;; Bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+	"straight/repos/straight.el/bootstrap.el"
+	(or (bound-and-true-p straight-base-dir)
+	    user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+	(url-retrieve-synchronously
+	 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+	 'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package '(dired :type built-in))
+(setq package-enable-at-startup nil)
+
 ;; Ensure use-package is present. From here on out, all packages are loaded
 ;; with use-package, a macro for importing and installing packages. Also, refresh the package archive on load so we can pull the latest packages.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package))
+  (straight-use-package 'use-package))
+
+(setq straight-use-package-by-default t)
 
 (require 'use-package)
 (setq
