@@ -113,6 +113,35 @@
 	which-key-unicode-correction 3)
   )
 
+
+;; ==================
+;;       Dired
+;; ==================
+
+(defun mars/dired-mode-hook ()
+  (interactive)
+  (dired-hide-details-mode 1)
+  (hl-line-mode 1))
+
+(use-package dired
+  :ensure nil
+  :bind (:map dired-mode-map
+              ("b" . dired-up-directory))
+  :config
+  (setq dired-listing-switches "-alv --group-directories-first"
+        dired-omit-files "^\\.[^.].*"
+        dired-omit-verbose nil
+        dired-dwim-target 'dired-dwim-target-next
+        dired-hide-details-hide-symlink-targets nil
+        dired-kill-when-opening-new-dired-buffer t
+        delete-by-moving-to-trash t)
+
+  (add-hook 'dired-mode-hook #'mars/dired-mode-hook))
+
+(use-package nerd-icons-dired
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
 ;; Better keybinding config
 (use-package general
   :config
