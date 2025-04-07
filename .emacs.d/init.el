@@ -124,6 +124,7 @@
   (mars/leader-keys
      "t" '(:ignore t :which-key "toggles")
      "tt" '(load-theme :which-key "choose theme")))
+
 ;; ===========================
 
 ;; Hydra - transient key bindings
@@ -310,6 +311,27 @@
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
+
+;; ===================
+;;      Projects
+;; ===================
+
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/code") ; set default directory for projects
+    (setq projectile-project-search-path '("~/code")))
+  (setq projectile-switch-project-action #'projectile-dired ; start projectile in dired view
+	projectile-tags-command "ctags-exuberant -Re -f %s %s"
+	projectile-cleanup-known-projects t))
+
+(use-package ripgrep)
+
+;; incorporate projectile into consult
+(use-package consult-projectile)
 
 ;; Enable rich minibuffer annotations
 (use-package marginalia
