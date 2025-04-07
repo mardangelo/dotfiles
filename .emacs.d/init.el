@@ -97,6 +97,16 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+;; Use sudo to edit files
+(use-package sudo-edit)
+
+;; git client
+(use-package magit)
+  ;; :custom
+  ;; (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+(setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
+
 ;; Enable which-key to show available keybindings when you start a key sequence
 (use-package which-key
   :init
