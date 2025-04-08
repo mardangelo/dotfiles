@@ -575,6 +575,15 @@
   :config
   (exec-path-from-shell-initialize))
 
+;; ===============
+;;      llm
+;; ===============
+
+(use-package chatgpt-shell
+  :config
+  (setq chatgpt-shell-google-key
+	(auth-source-pick-first-password :host "api.gemini.com")))
+
 ;; ==============
 ;;     Themes
 ;; ==============
