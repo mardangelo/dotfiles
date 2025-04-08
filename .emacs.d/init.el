@@ -119,15 +119,21 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
+
 ;; Use sudo to edit files
 (use-package sudo-edit)
 
-;; git client
-(use-package magit)
-  ;; :custom
-  ;; (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+;; =======
+;;   git 
+;; =======
 
-(setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
+;; git porcelain
+(use-package magit)
+
+;; client to fetch/manipulate issues, pull requests, and other data from forges (github, gitlab)
+(use-package sqlite3)
+(use-package forge)
 
 ;; Enable which-key to show available keybindings when you start a key sequence
 (use-package which-key
