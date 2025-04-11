@@ -102,6 +102,11 @@
 ;;   Packages
 ;; ============
 
+;; automatically install, use, fallback for tree-sitter major modes
+(use-package treesit-auto
+  :config
+  (global-treesit-auto-mode))
+
 ;; Better terminal emulator
 (use-package vterm
   :config
