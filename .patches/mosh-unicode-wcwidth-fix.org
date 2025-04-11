@@ -1,0 +1,49 @@
+#+title: Mosh Unicode Width Fix
+
+* Tmux and Mosh 
+
+~wcwidth~ determines the amount of space that a unicode character occupies. mosh relies on this because it doesn't redraw the screen completely, it only redraws what changed.
+
+If an icon is allocated the incorrect amount of space, then it will lead to graphical issues in mosh becuase it will allocate more or less space than it needs leading to missing parts of a line or parts that spill over onto the next one. This is very noticeable in lazy+neovim out of the box.
+
+** Mosh
+
+Mosh struggles with extended unicode characters, especially the ones with ambigious or variable widths (like emojis), when there are different interpretations of character width between the client and server.
+
+** Tmux
+
+Uses ~TERM~ to figure out how to render characters; it tells tmux how many colours it supports and how it handles character widths.
+
+Relies heavily on precise character alignment to manage panes and status lines. If tmux and mosh interpret a character width differently, pane borders and text get misaligned.
+
+** tmux + mosh
+
+tmux redraws parts of the screen it thinks has changed, mosh does something similar but only sends partial updates.
+
+Problems arise if tmux and mosh disagree on character width. tmux rendering a character as double width, but mosh interpreting the same character as single width results in mosh only redrawing half of what tmux does.
+
+Mosh only transmits characters that change for performance, unlike SSH which sends the entire screen. tmux redraws only parts of the screen it thinks have changed and Mosh's partial updates may fail to sync with tmux which leads to the visual artifacts. 
+
+* Unicode Versions and Character Widths
+
+** Unicode
+
+Constantly growing standard, where new revisions introduce new characters and revise the width of existing ones. Thus, different unicode versions may handle the same character differently (e.g., single vs double width).
+
+** Character Widths
+
+Terminal emulators use a library called ~wcwidth~ to handle unicode character widths by referencing a table that is updated with each unicode version. Apple is very outdated in this sense, whereas linux is more up to date.
+
+* Mosh vs SSH
+
+SSH transmits raw byte streams in both directions, allowing the client's terminal to interpret and render everything (including character widths) according to its own ~wcwidth~ tables. The client's terminal handles all rendering, interpreting Unicode characters using its own wcwidth tables, so there's no mismatch. 
+
+Mosh interprets characters on the server, while the client's terminal emulator interprets the display. If ~wcwidth~ is inconsistent between the client and the server then mosh can misalign text, which is compounded by tmux because it requires accurate widths for alignment. They can basically interpret the same thing in two different ways and thus draw things differently.
+
+* Patch
+
+[[https://github.com/mobile-shell/mosh/pull/1143][Use wcwidth from fish shell instead of libc | Github]]
+
+[[https://github.com/ridiculousfish/widecharwidth/blob/master/widechar_width.h][fish widecharwidth | Github]]
+
+Note: tmux status line using unicode 16 symbols which are too new for the mosh patch above, so I grabbed the latest from the fish repo, but also had to add the unicode 16 characters =0x1FB00-0x1FBFF= under *ambiguous width*, which assigns a width of 1. Some icons be wider so that may need to be tweaked.
