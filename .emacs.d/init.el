@@ -130,6 +130,11 @@
 ;; Use sudo to edit files
 (use-package sudo-edit)
 
+;; Slurp environment variables from the shell.
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+
 ;; Show command name and key binding for whatever was just executed
 (use-package keycast
   :after doom-modeline
@@ -171,6 +176,15 @@
 ;; client to fetch/manipulate issues, pull requests, and other data from forges (github, gitlab)
 (use-package sqlite3)
 (use-package forge)
+
+
+;; Enable rich minibuffer annotations
+(use-package marginalia
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle)
+         :map completion-list-mode-map
+         ("M-A" . marginalia-cycle))
+  :init (marginalia-mode))
 
 ;; Enable which-key to show available keybindings when you start a key sequence
 (use-package which-key
@@ -239,10 +253,6 @@
 ;; tl;dr create commands that create temporary keybindings
 ;; good for repetitive tasks like resizing windows, navigating windows because you create a new mode where you can freely repeat commands without prefixes until you quit (q)
 (use-package hydra)
-
-;; Straight up better modeline
-(use-package doom-modeline
-  :init (doom-modeline-mode 1))
 
 ;; Remap keys, create submenus, etc.
 (use-package general
@@ -680,20 +690,6 @@
   ;; useful beyond Corfu.
   (read-extended-command-predicate #'command-completion-default-include-p))
 
-;; Enable rich minibuffer annotations
-(use-package marginalia
-  :bind (:map minibuffer-local-map
-         ("M-A" . marginalia-cycle)
-         :map completion-list-mode-map
-         ("M-A" . marginalia-cycle))
-  :init (marginalia-mode))
-
-;; Slurp environment variables from the shell.
-;; a.k.a. The Most Asked Question On r/emacs
-(use-package exec-path-from-shell
-  :config
-  (exec-path-from-shell-initialize))
-
 ;; ===============
 ;;      llm
 ;; ===============
@@ -706,6 +702,10 @@
 ;; ==============
 ;;     Themes
 ;; ==============
+
+;; Straight up better modeline
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
 
 (use-package doom-themes
   :config
