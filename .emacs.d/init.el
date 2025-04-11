@@ -59,8 +59,9 @@
 
 ;; Set up emacs package archives with 'package
 (append-to-list package-archives
-                '(("melpa" . "http://melpa.org/packages/") ;; Main package archive
-                  ("melpa-stable" . "http://stable.melpa.org/packages/"))) ;; Some packages might only do stable releases?
+                '(("melpa" . "https://melpa.org/packages/") ;; Main package archive
+		  ("org" . "https://orgmode.org/elpa/")
+                  ("melpa-stable" . "https://stable.melpa.org/packages/"))) ;; Some packages might only do stable releases?
 
 (package-initialize)
 
