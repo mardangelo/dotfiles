@@ -130,6 +130,37 @@
 ;; Use sudo to edit files
 (use-package sudo-edit)
 
+;; Show command name and key binding for whatever was just executed
+(use-package keycast
+  :after doom-modeline
+  :hook (after-init . keycast-mode)
+  :config
+  (defun keycast-active-frame-bottom-right-pp ()
+    "Predicate to determine if should show keycast in the modeline."
+    (eq (selected-frame) (car (visible-frame-list))))
+  (define-minor-mode keycast-mode
+    "Show current command and its key binding in the mode line (fix for use with doom-mode-line)."
+    :global t
+    (if keycast-mode
+        (add-hook 'pre-command-hook 'keycast--update t)
+      (remove-hook 'pre-command-hook 'keycast--update)))
+  (add-to-list 'global-mode-string '("" keycast-mode-line))
+  (setq keycast-mode-line-window-predicate 'keycast-active-frame-bottom-right-pp
+	keycast-mode-line-remove-tail-elements nil
+        keycast-mode-line-insert-after 'doom-modeline-misc-info ; '(:eval (doom-modeline-format--main))
+	keycast-mode-line-format "%k%c%r"
+	keycast-log-format "%-10K%C%R\n"))
+
+;; Enhanced documentation with examples
+(use-package helpful
+  :bind
+  ([remap describe-function] . helpful-callable)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-key] . helpful-key)
+  ("C-h x" . helpful-command)
+  ("C-c C-d" . helpful-at-point)
+  ("C-h F" . helpful-function))
+
 ;; =======
 ;;   git 
 ;; =======
@@ -199,68 +230,144 @@
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
-;; Better keybinding config
-(use-package general
-  :config
-  (general-evil-setup t)
-  (general-create-definer mars/leader-keys
-			  :keymaps '(normal insert visual emacs)
-			  :prefix "SPC" ; not insert mode
-			  :global-prefix "M-SPC") ; insert mode
-  (mars/leader-keys
-     "t" '(:ignore t :which-key "toggles")
-     "tt" '(load-theme :which-key "choose theme")))
 
-;; ===========================
+;; ==================
+;;    Keybindings
+;; ==================
 
 ;; Hydra - transient key bindings
+;; tl;dr create commands that create temporary keybindings
+;; good for repetitive tasks like resizing windows, navigating windows because you create a new mode where you can freely repeat commands without prefixes until you quit (q)
 (use-package hydra)
-
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("j" text-scale-increase "in")
-  ("k" text-scale-decrease "out")
-  ("f" nil "finished" :exit t))
-
-(mars/leader-keys
-  "ts" '(hydra-text-scale/body :which-key "scale text"))
-
-;; ====================
 
 ;; Straight up better modeline
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
 
-;; Show command name and key binding for whatever was just executed
-(use-package keycast
-  :after doom-modeline
-  :hook (after-init . keycast-mode)
+;; Remap keys, create submenus, etc.
+(use-package general
+  :ensure t
   :config
-  (defun keycast-active-frame-bottom-right-pp ()
-    "Predicate to determine if should show keycast in the modeline."
-    (eq (selected-frame) (car (visible-frame-list))))
-  (define-minor-mode keycast-mode
-    "Show current command and its key binding in the mode line (fix for use with doom-mode-line)."
-    :global t
-    (if keycast-mode
-        (add-hook 'pre-command-hook 'keycast--update t)
-      (remove-hook 'pre-command-hook 'keycast--update)))
-  (add-to-list 'global-mode-string '("" keycast-mode-line))
-  (setq keycast-mode-line-window-predicate 'keycast-active-frame-bottom-right-pp
-	keycast-mode-line-remove-tail-elements nil
-        keycast-mode-line-insert-after 'doom-modeline-misc-info ; '(:eval (doom-modeline-format--main))
-	keycast-mode-line-format "%k%c%r"
-	keycast-log-format "%-10K%C%R\n"))
+  ;; * Global Keybindings
+  (general-define-key
+   "M-x" 'execute-extended-command
+   "C-s" 'consult-line
+   "C-r" 'consult-ripgrep
+   "C-x b" 'consult-buffer
+   "C-x C-f" 'find-file
+   "M-." 'embark-act
+   "M-g g" 'consult-goto-line
+   "M-g M-g" 'consult-goto-line)
 
-;; Enhanced documentation with examples
-(use-package helpful
-  :bind
-  ([remap describe-function] . helpful-callable)
-  ([remap describe-variable] . helpful-variable)
-  ([remap describe-key] . helpful-key)
-  ("C-h x" . helpful-command)
-  ("C-c C-d" . helpful-at-point)
-  ("C-h F" . helpful-function))
+  ;; Create a leader key definer for C-c key
+  (general-create-definer mars-leader-def
+    :prefix "C-c")
+
+  ;; ** Global Keybindings with mars-leader-def
+  (mars-leader-def
+    ;; Single key bindings
+    "a" 'org-agenda
+    "c" 'org-capture
+    "e" 'embark-act
+    "w" 'hydra-window/body
+    ;; "p" 'hydra-project/body
+    "o" 'hydra-org/body
+    
+    ;; Files section
+    "f" '(:ignore t :which-key "files")
+    "ff" 'find-file
+    "fr" 'consult-recent-file
+    "fp" 'projectile-find-file
+    
+    ;; Search section
+    "s" '(:ignore t :which-key "search")
+    "ss" 'consult-line
+    "sp" 'consult-ripgrep
+    "si" 'consult-imenu
+    "so" 'consult-outline
+    
+    ;; Buffer section
+    "b" '(:ignore t :which-key "buffers")
+    "bb" 'consult-buffer
+    "bd" 'kill-current-buffer
+    "bs" 'save-buffer
+    
+    ;; Help section
+    "h" '(:ignore t :which-key "help")
+    "hf" 'describe-function
+    "hv" 'describe-variable
+    "hk" 'describe-key)
+
+  (defhydra hydra-window (:columns 4)
+    "Window Management"
+    ("h" windmove-left "left")
+    ("j" windmove-down "down")
+    ("k" windmove-up "up")
+    ("l" windmove-right "right")
+    ("v" split-window-right "vsplit")
+    ("s" split-window-below "hsplit")
+    ("c" delete-window "close")
+    ("d" delete-window "delete")
+    ("u" winner-undo "undo")
+    ("o" delete-other-windows "only")
+    ("w" ace-window "pick")
+    ("+" enlarge-window "increase")
+    ("-" shrink-window "decrease")
+    ("=" balance-windows "equalize")
+    ("r" (lambda () (interactive) (window-swap-states (selected-window) (next-window))) "rotate")
+    ("b" balance-windows "balance")
+    ("m" maximize-window "maximize")
+    ("f" toggle-frame-fullscreen "fullframe")
+    ("q" nil "quit" :exit t))
+  
+  (defhydra hydra-navigate (:columns 4)
+    "Navigation"
+    ("n" next-buffer "next buffer")
+    ("p" previous-buffer "prev buffer")
+    ("k" kill-buffer "kill buffer")
+    ("R" rename-buffer "rename buffer")
+    ("f" find-file "find file")
+    ("s" save-buffer "save file")
+    ("S" save-some-buffers "save all")
+    ("r" consult-recent-file "recent files")
+    ("d" dired "dired")
+    ("g" goto-line "goto line")
+    ("t" beginning-of-buffer "top")
+    ("e" end-of-buffer "end")
+    ("m" set-mark-command "mark")
+    ("a" beginning-of-line "beginning")
+    ("b" switch-to-buffer "switch buffer")
+    ("i" imenu "imenu")
+    ("I" consult-imenu "consult-imenu")
+    ("q" nil "quit" :exit t))
+
+  (defhydra hydra-org (:columns 4 :color blue)
+    "Org Mode Commands"
+    ("h" org-insert-heading "headline")
+    ("k" org-cut-subtree "kill")
+    ("p" org-priority "priority")
+    ("t" org-todo "cycle todo")
+    ("s" org-schedule "schedule")
+    ("d" org-deadline "deadline")
+    ("i" org-clock-in "clock in")
+    ("o" org-clock-out "clock out")
+    ("r" org-clock-report "report")
+    ("l" org-insert-link "link")
+    ("T" org-time-stamp "timestamp")
+    ("P" org-set-property "property")
+    ("q" nil "quit"))
+  
+  ;; Configure settings
+  (general-setq auto-revert-interval 10)
+  (general-setq vertico-count 15)
+  (general-setq completion-styles '(orderless basic))
+  (general-setq orderless-component-separator #'orderless-escapable-split-on-space)
+  (general-setq enable-recursive-minibuffers t)
+  (general-setq embark-action-indicator
+        (lambda (map _target)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator))
 
 ;; ============================
 ;; Incremental fuzzy completion
@@ -318,7 +425,7 @@
 (use-package consult
   :bind (;; C-c bindings in `mode-specific-map`
 	 ("C-c M-x" . consult-mode-command)
-	 ("C-c h" . consult-history)
+	 ;("C-c h" . consult-history)
 	 ("C-c k" . consult-kmacro)
 	 ("C-c m" . consult-man)
 	 ("C-c i" . consult-info)
