@@ -147,6 +147,7 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 gpg-connect-agent /bye > /dev/null || gpg-agent --daemon --options ~/.gnupg/gpg-agent.conf
 
 # Customize to your needs...
+alias ll="ls -lah"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
