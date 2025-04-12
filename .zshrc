@@ -127,6 +127,21 @@ zstyle ':fzf-tab:complete:*:*' fzf-preview '
   fi
 '
 
+# Remove duplicated commands in history
+setopt HIST_IGNORE_ALL_DUPS
+
+# Include hidden files in autocomplete
+_comp_options+=(globdots)
+
+# Completion for other programs
+fpath=($ZDOTDIR/completions/ $fpath)
+
+# Auto-cd if the command is a directory and can't be executed as a normal command
+setopt auto_cd
+
+# When deleting with <C-w>, delete file names at a time.
+WORDCHARS=${WORDCHARS/\/}
+
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 gpg-connect-agent /bye > /dev/null || gpg-agent --daemon --options ~/.gnupg/gpg-agent.conf
