@@ -5,6 +5,14 @@
 (menu-bar-mode -1) ; toggle menu bar per frame
 (tooltip-mode -1) ; show help text in echo area, not pop up window
 
+;; Remap C-h to backspace (and C-M-h to delete prvious word)
+(global-set-key (kbd "C-h") 'delete-backward-char)
+
+;; Remap C-C h to be the help menu
+(global-set-key (kbd "C-c h") 'help-command)
+(define-key key-translation-map [?\C-h] [?\C-?])
+(global-set-key (kbd "C-c h") help-map)
+
 ;; ===============
 ;;    truecolor
 ;; ===============
@@ -162,9 +170,9 @@
   ([remap describe-function] . helpful-callable)
   ([remap describe-variable] . helpful-variable)
   ([remap describe-key] . helpful-key)
-  ("C-h x" . helpful-command)
-  ("C-c C-d" . helpful-at-point)
-  ("C-h F" . helpful-function))
+  ([remap describe-command] . helpful-command)
+  ("C-c C-d" . helpful-at-point))
+
 
 ;; =======
 ;;   git 
@@ -300,14 +308,8 @@
     "b" '(:ignore t :which-key "buffers")
     "bb" 'consult-buffer
     "bd" 'kill-current-buffer
-    "bs" 'save-buffer
+    "bs" 'save-buffer)
     
-    ;; Help section
-    "h" '(:ignore t :which-key "help")
-    "hf" 'describe-function
-    "hv" 'describe-variable
-    "hk" 'describe-key)
-
   (defhydra hydra-window (:columns 4)
     "Window Management"
     ("h" windmove-left "left")
@@ -545,10 +547,10 @@
 ;; Choose command based on what's near point, both in multibuffer completion and normal buffers
 (use-package embark
   :bind
+  ([remap describe-bindings] . embark-bindings)
   (("M-." . embark-act)
    ("M-o" . embark-act)
    ("M-;" . embark-dwim) ; good alternative to M-.
-   ("C-h B" . embark-bindings) ; alternative for describe-bindin
    :map minibuffer-local-map
    ("C-@" . embark-select) ; C-SPC shows up as C-@ in the minibuffer
    ("C-SPC" . embark-select)
