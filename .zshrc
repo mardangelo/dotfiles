@@ -17,9 +17,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-#function tldr() {
-#  command tldr "$@" | less -R
-#}
+zstyle ':fzf-tab:*' fzf-bindings 'enter:accept' 'ctrl-j:accept'
 
 # Configure previews in .zshrc
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls $realpath'
