@@ -153,6 +153,7 @@ alias ll="ls -lah"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 PATH="$HOME/.config/emacs/bin:$PATH"
+PATH="$PATH:$HOME/.venv/bin"
 export PATH
 
 export FZF_DEFAULT_COMMAND="rg --files --hidden"

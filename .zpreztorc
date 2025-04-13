@@ -219,15 +219,48 @@ zstyle ':prezto:module:syntax-highlighting' color 'yes'
    'cursor' \
    'root'
 
-# Set syntax highlighting styles.
- zstyle ':prezto:module:syntax-highlighting' styles \
-   'builtin' 'bg=blue' \
-   'command' 'bg=blue' \
-   'function' 'bg=blue'
-
 # Set syntax pattern styles.
  zstyle ':prezto:module:syntax-highlighting' pattern \
-   'rm*-rf*' 'fg=white,bold,bg=red'
+   'rm*-rf' 'fg=#292e42,bold,bg=#c53b53'
+   
+# Set Tokyo Night Storm syntax highlighting styles
+zstyle ':prezto:module:syntax-highlighting' styles \
+  'default' 'fg=#a9b1d6' \
+  'unknown-token' 'fg=#f7768e' \
+  'reserved-word' 'fg=#bb9af7,bold' \
+  'alias' 'bg=#8b7af7,bold,fg=#292e42' \
+  'suffix-alias' 'fg=#7aa2f7' \
+  'global-alias' 'fg=#7aa2f7' \
+  'builtin' 'fg=#292e42,bold,bg=#41a6b5' \
+  'function' 'fg=#292e42,bold,bg=#41a6b5' \
+  'command' 'fg=#292e42,bold,bg=#41a6b5' \
+  'precommand' 'fg=#7aa2f7,italic' \
+  'commandseparator' 'fg=#c0caf5' \
+  'hashed-command' 'fg=#7aa2f7' \
+  'autodirectory' 'fg=#2ac3de,underline' \
+  'path' 'fg=#2ac3de,underline' \
+  'path_pathseparator' 'fg=#ff9e64' \
+  'path_prefix' 'fg=#2ac3de,underline' \
+  'path_prefix_pathseparator' 'fg=#ff9e64' \
+  'globbing' 'fg=#7dcfff' \
+  'history-expansion' 'fg=#7dcfff' \
+  'single-hyphen-option' 'fg=#9ece6a' \
+  'double-hyphen-option' 'fg=#9ece6a' \
+  'back-quoted-argument' 'fg=#b4f9f8' \
+  'back-quoted-argument-delimiter' 'fg=#ff9e64' \
+  'single-quoted-argument' 'fg=#ffc777' \
+  'double-quoted-argument' 'fg=#ffc777' \
+  'dollar-quoted-argument' 'fg=#ffc777' \
+  'rc-quote' 'fg=#ffc777' \
+  'dollar-double-quoted-argument' 'fg=#4fd6be' \
+  'back-double-quoted-argument' 'fg=#4fd6be' \
+  'back-dollar-quoted-argument' 'fg=#4fd6be' \
+  'assign' 'fg=#c0caf5' \
+  'redirection' 'fg=#ff9e64' \
+  'comment' 'fg=#565f89' \
+  'named-fd' 'fg=#c0caf5' \
+  'numeric-fd' 'fg=#c0caf5' \
+  'arg0' 'fg=#7aa2f7'
 
 #
 # Terminal
