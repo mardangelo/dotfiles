@@ -18,8 +18,8 @@ Bookshelf/
 Documents/
 Downloads/
 tmp/
-.fonts/nerdfont-patcher/original/*
-.fonts/nerdfont-patcher/patched/*
+.fonts/nerdfont-patcher/input/*
+.fonts/nerdfont-patcher/output/*
 
 # Shell history files
 .*history
