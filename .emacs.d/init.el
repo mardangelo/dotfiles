@@ -120,10 +120,6 @@
   :config
   (setq-default vterm-exit-functions #'kill-buffer))
 
-;; Organization tool
-(use-package org
-  :pin gnu)
-
 ;; Highlight hex, rgb colour codes
 (use-package rainbow-mode
   :init
@@ -173,6 +169,53 @@
   ([remap describe-command] . helpful-command)
   ("C-c C-d" . helpful-at-point))
 
+;; ==============
+;;    Org Mode
+;; ==============
+
+(use-package org
+  :config
+  (setq org-ellipsis " 󰧖"
+        org-hide-emphasis-markers nil
+	org-agenda-start-with-log-mode t
+	org-log-done 'time
+	org-log-into-drawer t)
+  (setq org-agenda-files '("~/Documents/agenda/"
+			   "~/Documents/notes/org-mode/tasks.org"
+			   "~/Documents/notes/org-mode/birthdays.org"))
+  (setq org-todo-keywords
+	; different sequences denote different kinds of flows for different tasks
+	'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)") ; the | denotes that everything before it is an active state and everything after is a completed state
+	  (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANCELLED(k@)")))
+  (setq org-agenda-custom-commands
+      `(("d" "Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (tags-todo "+PRIORITY=\"A\""
+                     ((org-agenda-overriding-header "High Priority")))
+          (todo "*" ((org-agenda-files '("~/Documents/agenda/inbox.org"))
+                     (org-agenda-overriding-header "Unfiled Inbox Tasks")))
+          (tags-todo "+@followup" ((org-agenda-overriding-header "Needs Follow Up")))))
+
+        ("u" tags-todo "+ALLTAGS=\"\""
+         ((org-agenda-overriding-header "Untagged Tasks")))
+
+        ("n" "Next Tasks"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "NEXT"
+                ((org-agenda-overriding-header "Next Tasks")))))
+
+        ;; Low-effort next actions
+        ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+         ((org-agenda-overriding-header "Low Effort Tasks")
+          (org-agenda-max-todos 20)
+          (org-agenda-files org-agenda-files))))))
+
+;; org query language
+(use-package org-ql)
+
+;; coloured tags - add with keybinding or reload mode/buffer
+(use-package org-rainbow-tags
+  :hook ((org-mode org-agenda-finalize) . org-rainbow-tags-mode))
 
 ;; =======
 ;;   git 
