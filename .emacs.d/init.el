@@ -602,6 +602,29 @@
 
 (use-package ripgrep)
 
+(use-package tabspaces
+  :hook (after-init . tabspaces-mode)
+  :commands (tabspaces-switch-or-create-workspace
+             tabspaces-open-or-create-project-and-workspace)
+  :custom
+  (tabspaces-use-filtered-buffers-as-default t)
+  (tabspaces-default-tab "main")
+  (tabspaces-remove-to-default t)
+  (tabspaces-include-buffers '("*scratch*"))
+  (tabspaces-initialize-project-with-todo t)
+  (tabspaces-todo-file-name "project-todo.org")
+  ;; sessions
+  (tabspaces-session t)
+  (tabspaces-session-auto-restore t)
+  (tab-bar-new-tab-choice "*scratch*"))
+
+;; (use-package perspective
+;;   :bind ("C-x C-b" . persp-list-buffers)
+;;   :custom (persp-mode-prefix-key (kbd "C-c M-p"))
+;;   :init (persp-mode))
+
+;; (use-package persp-projectile)
+
 ;; incorporate projectile into consult
 (use-package consult-projectile)
 
@@ -809,21 +832,6 @@
 
 (setq tab-bar-tab-name-function #'mars/tab-bar-tab-name-function)
 (tab-bar-mode t)
-
-(use-package centaur-tabs
-  :demand
-  :config
-  (centaur-tabs-mode t)
-  (setq centaur-tabs-style "wave"
-	centaur-tabs-set-icons t
-	centaur-tabs-icon-type 'nerd-icons
-	centaur-tabs-gray-out-icons 'buffer
-	centaur-tabs-set-bar 'over
-	centaur-tabs-set-close-button nil
-	centaur-tabs-set-modified-marker t)
-  :bind
-  ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
