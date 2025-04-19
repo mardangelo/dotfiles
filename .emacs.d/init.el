@@ -217,6 +217,54 @@
 (use-package org-rainbow-tags
   :hook ((org-mode org-agenda-finalize) . org-rainbow-tags-mode))
 
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :config
+  ;; Remove the leading periods before bullets
+  (setq org-superstar-leading-bullet ?\s)  ; Use space instead of period
+  (setq org-superstar-leading-fallback ?\s)  ; Fallback to space
+  
+  ;; Set the number of spaces that will be displayed before items
+  (setq org-superstar-item-bullet-alist
+        '((?* . ?✧)  ; Level 1
+          (?+ . ?◦)  ; Level 2
+          (?- . ?•))) ; Level 3
+          
+  ;; Customize the headline bullets
+  (setq org-superstar-headline-bullets-list
+        '("◉" "○" "◆" "✿" "✸" "❂" "✤" "✦"))
+  
+
+  (setq org-superstar-special-todo-items t) ;; Makes TODO header bullets into boxes
+  (setq org-superstar-todo-bullet-alist '(("TODO" . 9744)
+                                          ("DONE" . 9744)
+                                          ("READ" . 9744)
+                                          ("IDEA" . 9744)
+                                          ("WAITING" . 9744)
+                                          ("CANCELLED" . 9744)
+                                          ("PROJECT" . 9744)
+                                          ("POSTPONED" . 9744)))
+  ;; Enable org-superstar-mode
+  (org-superstar-mode 1))
+
+;; Specify conditions before a task can be completed (e.g., dependent tasks)
+(use-package org-edna
+  :config
+  (org-edna-mode 1))
+
+;; Custom faces for Org headings using Tokyo Night palette
+(custom-set-faces
+ '(org-level-1 ((t (:foreground "#f7768e" :weight normal))))
+ '(org-level-2 ((t (:foreground "#7aa2f7" :weight bold :height 1.1))))
+ '(org-level-3 ((t (:foreground "#9ece6a" :weight semi-bold)))) 
+ '(org-level-4 ((t (:foreground "#ff9e64" :weight normal))))
+ '(org-level-5 ((t (:foreground "#7dcfff" :weight semi-bold))))
+ '(org-level-6 ((t (:foreground "#e0af68" :weight normal)))) 
+ '(org-level-7 ((t (:foreground "#bb9af7" :weight bold))))
+ '(org-level-8 ((t (:foreground "#d3869b" :weight normal))))
+)
+
 ;; =======
 ;;   git 
 ;; =======
