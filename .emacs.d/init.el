@@ -295,6 +295,9 @@
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
+(use-package dired-preview
+  :init
+  (dired-preview-global-mode))
 
 ;; ==================
 ;;    Keybindings
@@ -561,6 +564,25 @@
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
+
+;; =======================
+;;   Directory side view
+;; =======================
+
+(use-package treemacs)
+
+(use-package treemacs-nerd-icons
+  :config (treemacs-load-theme "nerd-icons"))
+
+;; (use-package treemacs-icons-dired
+;;   :hook (dired-mode . treemacs-icons-dired-enable-once))
+
+(use-package treemacs-magit
+  :after (treemacs magit))
+
+(use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
+  :after (treemacs)
+  :config (treemacs-set-scope-type 'Tabs))
 
 ;; ===================
 ;;      Projects
